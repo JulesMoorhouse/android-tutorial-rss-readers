@@ -19,3 +19,12 @@ https://www.youtube.com/watch?v=37GCI7dwwBs
 - Changed array of string to Person data class.
 - Also added some basic filtering.
 - Made some UI changes for new fields from data class
+
+### Part 3
+
+https://www.youtube.com/watch?v=JK9V1tj4VJ0&t=163s
+
+[app/src/main/java/com/example/rssreaders/RSSItem.kt](app/src/main/java/com/example/rssreaders/RSSItem.kt)
+
+- Added a new data class RSSItem and an Enum.
+- More UI.
