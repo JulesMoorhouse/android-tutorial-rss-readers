@@ -28,3 +28,12 @@ https://www.youtube.com/watch?v=JK9V1tj4VJ0&t=163s
 
 - Added a new data class RSSItem and an Enum.
 - More UI.
+
+### Part 4
+
+https://www.youtube.com/watch?v=wR2dTUgQiSI
+
+- Added a demo image.
+- Replaced if / else, with when which is more like switch in swift.
+- Added more data / styling.
+- Example of unwrapping an optional, not sure if that's the same terminology in Kotlin.

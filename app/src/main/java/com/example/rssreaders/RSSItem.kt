@@ -3,7 +3,8 @@ package com.example.rssreaders
 data class RSSItem(
     val title: String,
     val text: String,
-    val type: RSSType
+    val type: RSSType,
+    val media: Int? = null
 )
 
 enum class RSSType {

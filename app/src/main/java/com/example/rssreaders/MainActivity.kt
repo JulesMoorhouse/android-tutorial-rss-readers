@@ -1,10 +1,12 @@
 package com.example.rssreaders
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,8 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.rssreaders.ui.theme.RSSReadersTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,13 +43,11 @@ class MainActivity : ComponentActivity() {
 //         val peopleFiltered = people.filter { it.age >= 21 && it.lastName == "Smith"}
 
         val rssItems = listOf(
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.TEXT),
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.VIDEO),
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.TEXT),
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.TEXT),
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.TEXT),
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.IMAGE),
-            RSSItem("Welcome to me blog!", "sdas dsfas das dasd", RSSType.TEXT),
+            RSSItem("Welcome to Austin, Texas we have music!", "There is lots of music here in Austin, Texas.", RSSType.TEXT),
+            RSSItem("Welcome to my photo gallery, view photos", "click here for gallery", RSSType.IMAGE, R.drawable.house),
+            RSSItem("Welcome to my photo gallery, view photos", "click here for gallery", RSSType.IMAGE, R.drawable.house),
+            RSSItem("Welcome to my photo gallery, view photos", "click here for gallery", RSSType.IMAGE, R.drawable.house),
+            RSSItem("Press conference happening right now!", "Watch live", RSSType.VIDEO, R.drawable.house), // Assume this was a video
         )
 
         setContent {
@@ -58,12 +60,17 @@ class MainActivity : ComponentActivity() {
 
                     LazyColumn {
                         items(rssItems) {
-                            if (it.type == RSSType.TEXT) {
-                                RSSItemText(it)
-                            } else if (it.type == RSSType.VIDEO) {
-                                RSSItemVideo(it)
-                            } else if (it.type == RSSType.IMAGE) {
-                                RSSItemImage(it)
+                            // Replace if / else, with when, which looks more live a switch in swift
+                            when (it.type) {
+                                RSSType.TEXT -> {
+                                    RSSItemText(it)
+                                }
+                                RSSType.VIDEO -> {
+                                    RSSItemVideo(it)
+                                }
+                                RSSType.IMAGE -> {
+                                    RSSItemImage(it)
+                                }
                             }
                         }
                     }
@@ -128,6 +135,13 @@ fun RSSItemText(rssItem: RSSItem) {
     ) {
         Text(
             text = rssItem.title,
+            fontSize = 32.sp,
+            lineHeight = 32.sp,
+            fontWeight = FontWeight.Black,
+            modifier = Modifier.padding(12.dp)
+        )
+        Text(
+            text = rssItem.text,
             modifier = Modifier.padding(12.dp)
         )
     }
@@ -140,15 +154,21 @@ fun RSSItemVideo(rssItem: RSSItem) {
             .padding(24.dp)
     ) {
         Text(
-            text = "Click below to play video",
+            text = rssItem.title,
+            fontSize = 32.sp,
+            lineHeight = 32.sp,
+            fontWeight = FontWeight.Black,
             modifier = Modifier.padding(12.dp)
         )
-        Image(
-            painter = painterResource(id = R.drawable.baseline_person_24),
-            contentDescription = "Photo of person",
-            modifier = Modifier.width(300.dp)
-                .height(300.dp)
-        )
+        // This is like a guard of if let in swift, to unwrap
+        rssItem.media?.let { video ->
+            Image(
+                painter = painterResource(id = video),
+                contentDescription = "Photo of person",
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
     }
 }
 
@@ -159,14 +179,25 @@ fun RSSItemImage(rssItem: RSSItem) {
             .padding(24.dp)
     ) {
         Text(
-            text = "Photo below:",
+            text = rssItem.title,
+            fontSize = 32.sp,
+            lineHeight = 48.sp,
+            fontWeight = FontWeight.Black,
             modifier = Modifier.padding(12.dp)
+                .clickable {
+                    // See in LogCat - aka console
+                    Log.d("djmalone", "Photo tapped!")
+                }
         )
-        Image(
-            painter = painterResource(id = R.drawable.baseline_person_24),
-            contentDescription = "Photo of person",
-            modifier = Modifier.width(300.dp)
-                .height(300.dp)
-        )
+
+        // This is like a guard of if let in swift, to unwrap
+        rssItem.media?.let { photo ->
+            Image(
+                painter = painterResource(id = photo),
+                contentDescription = "Photo of person",
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
     }
 }
