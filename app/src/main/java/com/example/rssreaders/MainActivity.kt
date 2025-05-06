@@ -27,8 +27,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
-        val people = listOf("John", "Jack", "DJ", "Luke", "Matt", "John", "Jack", "DJ", "Luke", "Matt", "John", "Jack", "DJ", "Luke", "Matt")
+
+        val people = listOf(
+            Person("DJ", "Malone", 25),
+            Person("DJ", "Smith", 30),
+            Person("DJ", "Smith", 10),
+            Person("DJ", "Malone", 21),
+            Person("DJ", "Malone", 20),
+        )
+
+        val peopleFiltered = people.filter { it.age >= 21 && it.lastName == "Smith"}
 
         setContent {
             RSSReadersTheme {
@@ -39,8 +47,8 @@ class MainActivity : ComponentActivity() {
                     )
 
                     LazyColumn {
-                        items(people) {
-                            ListItem(it)
+                        items(peopleFiltered) {
+                            CardView(it)
                         }
                     }
                 }
@@ -66,7 +74,7 @@ fun GreetingPreview() {
 }
 
 @Composable
-fun ListItem(name: String) {
+fun CardView(person: Person) {
     Card(
         modifier = Modifier.fillMaxSize()
             .padding(12.dp)
@@ -78,10 +86,20 @@ fun ListItem(name: String) {
                 modifier = Modifier.width(100.dp)
                     .height(100.dp)
             )
-            Text(
-                text = name,
-                modifier = Modifier.padding(24.dp)
-            )
+            Column {
+                Text(
+                    text = person.firstName,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                Text(
+                    text = person.lastName,
+                    modifier = Modifier.padding(0.dp)
+                )
+                Text(
+                    text = "Age: " + person.age,
+                    modifier = Modifier.padding(0.dp)
+                )
+            }
         }
     }
 }
